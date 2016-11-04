@@ -19,7 +19,12 @@ tests_SOURCES = $(wildcard tests/*.cpp)
 tests_OBJECTS=$(tests_SOURCES:tests/%.cpp=bin/tests/%.o)
 tests_EXECUTABLE = bin/tests_bin
 
-all: $(lib_SHARED) tests
+all: directories $(lib_SHARED) tests
+
+directories:
+	@mkdir -p bin/app
+	@mkdir -p bin/lib
+	@mkdir -p bin/tests
 
 bin/app/%.o : app/%.cpp
 	$(CXX) -c $(CPPFLAGS) $< -o $@
