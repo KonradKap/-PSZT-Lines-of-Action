@@ -5,4 +5,5 @@
   * *Dziwne, u mnie działa*
 
 ##TODO:
-[ ] Wszystko
+ - [ ] Wszystko
+ - [ ] Pójść na piwo

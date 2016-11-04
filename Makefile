@@ -2,9 +2,10 @@
 #  # -Werror == treat warnings as ERRORS!
 CXX = c++
 CUR_DIR = $(shell pwd)
-CPPFLAGS = --std=c++1y -Wall -Werror -O0 -I/usr/include/python3.4 -I$(CUR_DIR)/app -I$(CUR_DIR)/lib -I$(CUR_DIR)/tests
+CPPFLAGS = --std=c++1y -Wall -O0 
+INCLUDES = $(shell python3-config --includes) -I$(CUR_DIR)/app -I$(CUR_DIR)/lib -I$(CUR_DIR)/tests
 LINKFLAGS = --std=c++1y -lstdc++
-SHAREDLFLAGS = -lboost_python-py34
+SHAREDLFLAGS = -Wl,-Bdynamic -lboost_python-py34
 TESTLFLAGS = -lboost_unit_test_framework
 
 app_SOURCES=$(wildcard app/*.cpp)
@@ -27,28 +28,28 @@ directories:
 	@mkdir -p bin/tests
 
 bin/app/%.o : app/%.cpp
-	$(CXX) -c $(CPPFLAGS) $< -o $@
+	$(CXX) -c $(CPPFLAGS) $< -o $@ $(INCLUDES)
 
 bin/lib/%.o : lib/%.cpp
-	$(CXX) -c -fPIC $(CPPFLAGS) $< -o $@
+	$(CXX) -c -fPIC $(CPPFLAGS) $< -o $@ $(INCLUDES)
 
 bin/lib/%.o : app/%.cpp
-	$(CXX) -c -fPIC $(CPPFLAGS) $< -o $@
+	$(CXX) -c -fPIC $(CPPFLAGS) $< -o $@ $(INCLUDES)
 
 bin/lib/%.so : bin/lib/%.o $(app_SHARED)
-	$(CXX) -shared $< $(app_SHARED) -o $@ $(LINKFLAGS) $(SHAREDLFLAGS)
+	$(CXX) -shared $< $(app_SHARED) -o $@ $(LINKFLAGS) $(SHAREDLFLAGS) $(INCLUDES)
 
 bin/tests/%.o : tests/%.cpp
-	$(CXX) -c $(CPPFLAGS) $< -o $@
+	$(CXX) -c $(CPPFLAGS) $< -o $@ $(INCLUDES)
 
 $(tests_EXECUTABLE): $(tests_OBJECTS) $(app_OBJECTS)
-	$(CXX) -o $@ $(tests_OBJECTS) $(app_OBJECTS) $(LINKFLAGS) $(TESTLFLAGS)
+	$(CXX) -o $@ $(tests_OBJECTS) $(app_OBJECTS) $(LINKFLAGS) $(TESTLFLAGS) $(INCLUDES)
 
 tests: $(tests_EXECUTABLE)
 	./$(tests_EXECUTABLE)
 
 .PHONY: clean tests
-.SECONDARY: $(lib_OBJECTS)
+.SECONDARY: $(lib_OBJECTS) $(app_SHARED)
 
 clean:
 	- rm bin/lib/*.so  || true
