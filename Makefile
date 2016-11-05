@@ -1,11 +1,11 @@
 # -Wall == all warnings enabled
 #  # -Werror == treat warnings as ERRORS!
 CXX = c++
-CUR_DIR = $(shell pwd)
-CPPFLAGS = --std=c++1y -Wall -O0 
+CUR_DIR = "$(shell pwd)"
+CPPFLAGS = --std=c++1y -Wall -O0
 INCLUDES = $(shell python3-config --includes) -I$(CUR_DIR)/app -I$(CUR_DIR)/lib -I$(CUR_DIR)/tests
 LINKFLAGS = --std=c++1y -lstdc++
-SHAREDLFLAGS = -Wl,-Bdynamic -lboost_python-py34
+SHAREDLFLAGS = $(shell bash boost-python.sh)
 TESTLFLAGS = -lboost_unit_test_framework
 
 app_SOURCES=$(wildcard app/*.cpp)
