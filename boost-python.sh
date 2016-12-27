@@ -11,17 +11,13 @@ function print_flags() {
     return 1
 }
 
-dlibs=$(find /usr/lib/ -name "libboost_python*\.so")
-slibs=$(find /usr/lib/ -name "libboost_python*\.a")
-dlibs=(${dlibs// / })
-slibs=(${slibs// / })
+libs=$(find /usr/lib/ /usr/lib64/ -name "libboost_python*\.a" -o -name "libboost_python*\.so" 2>/dev/null)
+libs=(${libs// / })
 
-print_flags "${slibs[*]}" "boost_python3" && exit 0
-print_flags "${dlibs[*]}" "boost_python3" "-Wl,Bdynamic" && exit 0
+print_flags "${libs[*]}" "boost_python3" && exit 0
 
 pyv=`python3 --version`
 pyv=${pyv:7:-2}
 pyv=${pyv/"."/""}
 
-print_flags "${slibs[*]}" "boost_python-py$pyv" && exit 0
-print_flags "${dlibs[*]}" "boost_python-py$pyv" "-Wl,Bdynamic" && exit 0
+print_flags "${libs[*]}" "boost_python-py$pyv" && exit 0
