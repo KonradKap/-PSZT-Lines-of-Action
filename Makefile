@@ -2,9 +2,9 @@
 #  # -Werror == treat warnings as ERRORS!
 CXX = c++
 CUR_DIR = $(shell pwd)
-CPPFLAGS = --std=c++1y -Wall -O0
+CPPFLAGS = --std=c++1y -Wall -Wextra -O0
 INCLUDES = $(shell python3-config --includes) -I"$(CUR_DIR)/app" -I"$(CUR_DIR)/lib" -I"$(CUR_DIR)/tests"
-LINKFLAGS = --std=c++1y -lstdc++
+LINKFLAGS = --std=c++1y -lstdc++ -lpthread
 SHAREDLFLAGS = $(shell bash boost-python.sh)
 TESTLFLAGS = 
 

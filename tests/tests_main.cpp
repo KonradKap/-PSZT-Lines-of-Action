@@ -3,4 +3,4 @@ extern int putenv(char*);
 #endif
 
 #define BOOST_TEST_MODULE EXAMPLE
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
