@@ -10,7 +10,7 @@ class Runner {
         Ret run_for(std::chrono::milliseconds duration, Args... args);
 
     protected:
-        const Ret& get_value() const;
+        const Ret& get_value();
         void set_value(const Ret& new_val);
     private:
         virtual void run(Args... args) = 0;
@@ -21,7 +21,8 @@ class Runner {
         bool can_continue();
 
         bool continuation;
-        std::mutex lock;
+        std::mutex cont_lock;
+        std::mutex value_lock;
         Ret value;
 };
 

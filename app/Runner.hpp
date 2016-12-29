@@ -1,6 +1,6 @@
 template<class Ret, class... Args>
 bool Runner<Ret, Args...>::can_continue() {
-    const std::lock_guard<std::mutex> guard(lock);
+    const std::lock_guard<std::mutex> guard(cont_lock);
     return continuation;
 }
 
@@ -20,19 +20,21 @@ std::thread Runner<Ret, Args...>::start(Args... args) {
 template<class Ret, class... Args>
 void Runner<Ret, Args...>::stop(std::thread& thread) {
     {
-        const std::lock_guard<std::mutex> guard(lock);
+        const std::lock_guard<std::mutex> guard(cont_lock);
         continuation = false;
     }
-    thread.join();
+    thread.detach();
 }
 
 template<class Ret, class... Args>
-const Ret& Runner<Ret, Args...>::get_value() const {
+const Ret& Runner<Ret, Args...>::get_value() {
+    const std::lock_guard<std::mutex> guard(value_lock);
     return value;
 }
 
 template<class Ret, class... Args>
 void Runner<Ret, Args...>::set_value(const Ret& new_val) {
+    const std::lock_guard<std::mutex> guard(value_lock);
     value = new_val;
 }
 

@@ -4,10 +4,11 @@
 
 #include "Runner.h"
 #include "Board.h"
+#include "Position.h"
 
-class MinMaxRunner : public Runner<std::vector<int>, const Board&> {
+class MinMaxRunner : public Runner<std::pair<Position, Position>, const Board&> {
     private:
         void run(const Board& state);
 
-        long long i;
+        int depth = 1;
 };
