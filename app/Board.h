@@ -7,6 +7,13 @@
 #include "Position.h"
 #include "Field.h"
 
+enum GameOverResult {
+    NoWinner,
+    WhiteWon,
+    BlackWon,
+    Draw,
+};
+
 class Board {
     public:
         typedef std::array<std::array<Field, 8>, 8> board_t;
@@ -17,6 +24,7 @@ class Board {
         std::vector<Position> getPawns(Field group) const;
         int getPawnsCount(Position begin, Direction dir) const;
         std::vector<Position> getAllPossibleMoves(Position pawn) const;
+        std::vector<Position> getNeighbourFields(Position pos) const;
 
         static bool isValid(Position position);
         static bool isValid(int x, int y);
@@ -27,11 +35,25 @@ class Board {
         void movePawn(Position from, Position to);
         Board getMoved(Position from, Position to) const;
 
-        int getValue() const;
+        double evaluate(Field moving_player) const;
+
         Field get(int x, int y) const;
         Field get(Position pos) const;
+
+        bool isGameOver() const;
+        GameOverResult getWinner() const;
     private:
+        double getValue(Field moving_player) const;
+
+        unsigned countGroupFrom(Position pawn) const;
+        unsigned countBiggestGroup(Field colour) const;
+        bool areAllConnected(Field colour) const;
+
+        std::pair<double, double> getMassCenter(Field colour) const;
+        double getDistanceSumTo(Field colour, std::pair<double, double> pos) const;
+
         bool enemyBlocks(Position pawn, int range, Direction dir) const;
         void putIfNotBlocked(std::vector<Position>& ret, Position pawn, Direction axis) const;
+
         board_t state;
 };

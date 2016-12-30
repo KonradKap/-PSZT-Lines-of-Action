@@ -40,6 +40,14 @@ BOOST_PYTHON_MODULE(LoA) {
         .value("Black", Field::Black)
         .value("Empty", Field::Empty)
     ;
+    def("enemyOf", &enemyOf);
+
+    enum_<GameOverResult>("GameOverResult")
+        .value("NoWinner", GameOverResult::NoWinner)
+        .value("WhiteWon", GameOverResult::WhiteWon)
+        .value("BlackWon", GameOverResult::BlackWon)
+        .value("Draw", GameOverResult::Draw)
+    ;
 
     bool (Board::*isOccupied_pos)(Position) const = &Board::isOccupied;
     bool (Board::*isOccupied_field)(Position, Field) const = &Board::isOccupied;
@@ -49,18 +57,20 @@ BOOST_PYTHON_MODULE(LoA) {
     Field (Board::*get_pos)(Position) const = &Board::get;
 
     class_<Board>("Board")
-        .def("isOccupied", isOccupied_pos)
-        .def("isOccupied", isOccupied_field)
-        .def("movePawn", &Board::movePawn)
         .def("getPawns", &Board::getPawns)
         .def("getPawnsCount", &Board::getPawnsCount)
         .def("getAllPossibleMoves", &Board::getAllPossibleMoves)
+        .def("getNeighbourFields", &Board::getNeighbourFields)
         .def("isValid", isValid_ii)
         .def("isValid", isValid_pos)
+        .def("isOccupied", isOccupied_pos)
+        .def("isOccupied", isOccupied_field)
+        .def("movePawn", &Board::movePawn)
         .def("getMoved", &Board::getMoved)
-        .def("getValue", &Board::getValue)
+        .def("evaluate", &Board::evaluate)
         .def("get", get_ii)
         .def("get", get_pos)
+        .def("isGameOver", &Board::isGameOver)
+        .def("getWinner", &Board::getWinner)
     ;
-    def("enemyOf", &enemyOf);
 }
