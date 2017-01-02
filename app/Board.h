@@ -26,6 +26,8 @@ class Board {
         std::vector<Position> getAllPossibleMoves(Position pawn) const;
         std::vector<Position> getNeighbourFields(Position pos) const;
 
+        std::vector<Board> getPossibleStates() const; // new
+
         static bool isValid(Position position);
         static bool isValid(int x, int y);
 
@@ -36,9 +38,12 @@ class Board {
         Board getMoved(Position from, Position to) const;
 
         double evaluate(Field moving_player) const;
+        //double evaluate() const; new
 
         Field get(int x, int y) const;
         Field get(Position pos) const;
+
+        Field getMovingPlayer() const;
 
         bool isGameOver() const;
         GameOverResult getWinner() const;
