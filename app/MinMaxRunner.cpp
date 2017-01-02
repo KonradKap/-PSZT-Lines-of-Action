@@ -9,7 +9,7 @@ void MinMaxRunner::run(const Board& state) {
 
     double inf = std::numeric_limits<double>::infinity();
 	alphabeta(tree.get()->getRoot(), -inf, inf);
-	//set_value(std::make_pair(Position{depth, 3}, Position{4, 5}));
+	set_value(std::make_pair(Position{depth, 3}, Position{4, 5}));
 }
 
 

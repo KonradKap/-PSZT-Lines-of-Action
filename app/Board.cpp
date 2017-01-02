@@ -250,3 +250,15 @@ void Board::putIfNotBlocked(std::vector<Position>& ret, Position pawn, Direction
             ret.push_back(pos);
     }
 }
+
+
+Field Board::getMovingPlayer() const
+{
+    return Field::White;
+}
+
+std::vector<Board> Board::getPossibleStates() const
+{
+    std::vector<Board> c;
+    return c;
+}
