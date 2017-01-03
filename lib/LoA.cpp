@@ -6,6 +6,7 @@
 #include "Direction.h"
 #include "Position.h"
 #include "Field.h"
+#include "MinMaxRunner.h"
 
 using namespace boost::python;
 
@@ -72,4 +73,6 @@ BOOST_PYTHON_MODULE(LoA) {
         .def("isGameOver", &Board::isGameOver)
         .def("getWinner", &Board::getWinner)
     ;
+
+	def("AI_turn", &AI_turn);
 }
