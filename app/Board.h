@@ -34,11 +34,9 @@ class Board {
         bool isOccupied(Position pos) const;
         bool isOccupied(Position pos, Field f) const;
 
-        void movePawn(Position from, Position to);
         Board getMoved(Position from, Position to) const;
 
-        double evaluate(Field moving_player) const;
-        //double evaluate() const; new
+        double evaluate() const;
 
         Field get(int x, int y) const;
         Field get(Position pos) const;
@@ -49,6 +47,7 @@ class Board {
         GameOverResult getWinner() const;
     private:
         double getValue(Field moving_player) const;
+        void makeTurn(Position from, Position to);
 
         unsigned countGroupFrom(Position pawn) const;
         unsigned countBiggestGroup(Field colour) const;
@@ -61,4 +60,5 @@ class Board {
         void putIfNotBlocked(std::vector<Position>& ret, Position pawn, Direction axis) const;
 
         board_t state;
+        Field current_player;
 };

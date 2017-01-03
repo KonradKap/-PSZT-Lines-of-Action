@@ -20,7 +20,8 @@ Board::Board() :
             {{Black, Empty, Empty, Empty, Empty, Empty, Empty, Black}},
             {{Black, Empty, Empty, Empty, Empty, Empty, Empty, Black}},
             {{Empty, White, White, White, White, White, White, Empty}}
-        }} {
+        }},
+        current_player(Black) {
 }
 
 Board::Board(board_t initial_state) :
@@ -79,6 +80,14 @@ std::vector<Position> Board::getNeighbourFields(Position pos) const {
     return ret;
 }
 
+std::vector<Board> Board::getPossibleStates() const {
+    std::vector<Board> ret;
+    for(const auto& pawn : getPawns(current_player))
+        for(const auto& move : getAllPossibleMoves(pawn))
+            ret.push_back(getMoved(pawn, move));
+    return ret;
+}
+
 bool Board::isValid(Position position) {
     return isValid(position.x, position.y);
 }
@@ -97,23 +106,14 @@ bool Board::isOccupied(Position pos, Field f) const {
     return state[pos.x][pos.y] == f;
 }
 
-void Board::movePawn(Position from, Position to) {
-    if(not isOccupied(from))
-        throw PawnNotPresentError("There is no pawn at[" + std::to_string(from.x) +
-                ", " + std::to_string(from.y) + "]");
-
-    state[to.x][to.y] = Empty;
-    std::swap(state[from.x][from.y], state[to.x][to.y]);
-}
-
 Board Board::getMoved(Position from, Position to) const {
     Board ret = *this;
-    ret.movePawn(from, to);
+    ret.makeTurn(from, to);
     return ret;
 }
 
-double Board::evaluate(Field moving_player) const {
-    auto moving_player_bonus = moving_player==White?1.0:-1.0;
+double Board::evaluate() const {
+    auto moving_player_bonus = current_player==White?1.0:-1.0;
     moving_player_bonus *= 4;
     return getValue(White) - getValue(Black) + moving_player_bonus;
 }
@@ -124,6 +124,10 @@ Field Board::get(int x, int y) const {
 
 Field Board::get(Position pos) const {
     return get(pos.x, pos.y);
+}
+
+Field Board::getMovingPlayer() const {
+    return current_player;
 }
 
 bool Board::isGameOver() const {
@@ -154,6 +158,16 @@ double Board::getValue(Field colour) const {
     return concentration*concentration_weight +
            centralization*centralization_weight +
            center_mass_value;
+}
+
+void Board::makeTurn(Position from, Position to) {
+    if(not isOccupied(from))
+        throw PawnNotPresentError("There is no pawn at[" + std::to_string(from.x) +
+                ", " + std::to_string(from.y) + "]");
+
+    state[to.x][to.y] = Empty;
+    std::swap(state[from.x][from.y], state[to.x][to.y]);
+    current_player = enemyOf(current_player);
 }
 
 unsigned Board::countGroupFrom(Position pawn) const {
@@ -249,16 +263,4 @@ void Board::putIfNotBlocked(std::vector<Position>& ret, Position pawn, Direction
         if(isValid(pos) and not isOccupied(pos, get(pawn)))
             ret.push_back(pos);
     }
-}
-
-
-Field Board::getMovingPlayer() const
-{
-    return Field::White;
-}
-
-std::vector<Board> Board::getPossibleStates() const
-{
-    std::vector<Board> c;
-    return c;
 }

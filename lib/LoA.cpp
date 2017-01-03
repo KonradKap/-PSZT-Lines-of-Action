@@ -65,7 +65,6 @@ BOOST_PYTHON_MODULE(LoA) {
         .def("isValid", isValid_pos)
         .def("isOccupied", isOccupied_pos)
         .def("isOccupied", isOccupied_field)
-        .def("movePawn", &Board::movePawn)
         .def("getMoved", &Board::getMoved)
         .def("evaluate", &Board::evaluate)
         .def("get", get_ii)

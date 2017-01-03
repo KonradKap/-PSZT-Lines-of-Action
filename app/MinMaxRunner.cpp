@@ -1,7 +1,6 @@
 #include "MinMaxRunner.h"
 
 void MinMaxRunner::run(const Board& state) {
-    //std::ignore = state;
     if(tree.get() == nullptr)
     	tree = std::make_shared<GameTree>(state, 2);
     else 
@@ -9,14 +8,17 @@ void MinMaxRunner::run(const Board& state) {
 
     double inf = std::numeric_limits<double>::infinity();
 	alphabeta(tree.get()->getRoot(), -inf, inf);
-	set_value(std::make_pair(Position{depth, 3}, Position{4, 5}));
+    //tutaj powinno byc jakies wywolanie set_value ustawiajace najlepszy na ten moment
+    //wyliczony ruch, jesli typy nie pasuja, to zmienic parametr szablonu klasy po
+    //ktorej dziedziczy MinMaxRunner, w stylu
+    //class MinMaxRunner : public Runner< 'return type', 'argumenty do run...' >
 }
 
 
 double MinMaxRunner::alphabeta(const GameTree::Node& node, double alpha, double beta)
 {
 	if(node.isTerminal())
-		return node.state.evaluate(node.state.getMovingPlayer());
+		return node.state.evaluate();
 
 	double v, result;
 	if(node.state.getMovingPlayer() == Field::White)

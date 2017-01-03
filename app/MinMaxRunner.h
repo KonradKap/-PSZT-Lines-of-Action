@@ -15,9 +15,6 @@ class MinMaxRunner : public Runner<std::pair<Position, Position>, const Board&> 
 
         double alphabeta(const GameTree::Node& node, double alpha, double beta);
 
-        int depth = 1;
-
         Board next_state;
         std::shared_ptr<GameTree> tree;
-
 };
