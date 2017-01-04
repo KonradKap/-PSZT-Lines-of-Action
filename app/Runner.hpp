@@ -1,3 +1,5 @@
+#include <iostream>
+
 template<class Ret, class... Args>
 bool Runner<Ret, Args...>::can_continue() {
     const std::lock_guard<std::mutex> guard(cont_lock);
@@ -17,13 +19,15 @@ std::thread Runner<Ret, Args...>::start(Args... args) {
     return std::thread(std::bind(&Runner<Ret, Args...>::do_running, this, args...));
 }
 
+//template<class Ret, class... Args>
+//void Runner<Ret, Args...>::stop(std::thread& thread) {
 template<class Ret, class... Args>
-void Runner<Ret, Args...>::stop(std::thread& thread) {
+void Runner<Ret, Args...>::stop() {
     {
         const std::lock_guard<std::mutex> guard(cont_lock);
         continuation = false;
     }
-    thread.detach();
+    //thread.detach();
 }
 
 template<class Ret, class... Args>
@@ -42,7 +46,8 @@ template<class Ret, class... Args>
 Ret Runner<Ret, Args...>::run_for(std::chrono::milliseconds duration, Args... args) {
     auto thread = start(args...);
     std::this_thread::sleep_for(duration);
-    stop(thread);
-
+    //stop(thread);
+    stop();
+    thread.join(); //new
     return get_value();
 }

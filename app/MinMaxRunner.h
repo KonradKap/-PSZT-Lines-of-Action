@@ -13,7 +13,7 @@ class MinMaxRunner : public Runner<Board, const Board&> {
     private:
         void run(const Board& state);
 
-        double alphabeta(const GameTree::Node& node, double alpha, double beta);
+        double alphabeta(const GameTree::Node * node, double alpha, double beta);
 
         Board next_state;
         std::shared_ptr<GameTree> tree;

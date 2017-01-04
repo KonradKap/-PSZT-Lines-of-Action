@@ -16,5 +16,5 @@ board = Board()
 print_board(board)
 
 board = AI_turn(board)
-
+print("")
 print_board(board)

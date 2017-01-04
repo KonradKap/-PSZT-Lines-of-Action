@@ -2,10 +2,9 @@
 
 void MinMaxRunner::run(const Board& state) {
     if(tree.get() == nullptr)
-    	tree = std::make_shared<GameTree>(state, 2);
-    else {
+    	tree = std::make_shared<GameTree>(state, 1);
+    else 
     	tree.get()->update();
-	}
 
     double inf = std::numeric_limits<double>::infinity();
 	alphabeta(tree.get()->getRoot(), -inf, inf);
@@ -13,22 +12,22 @@ void MinMaxRunner::run(const Board& state) {
 }
 
 
-double MinMaxRunner::alphabeta(const GameTree::Node& node, double alpha, double beta)
+double MinMaxRunner::alphabeta(const GameTree::Node * node, double alpha, double beta)
 {
-	if(node.isTerminal())
-		return node.state.evaluate();
+	if(node->isTerminal())
+		return node->state.evaluate();
 
 	double v, result;
-	if(node.state.getMovingPlayer() == Field::White)
+	if(node->state.getMovingPlayer() == Field::White)
 	{
 		v = -std::numeric_limits<double>::infinity();
-		for (auto it = node.next.begin(); it != node.next.end(); ++it)
+		for (auto it = node->next.begin(); it != node->next.end(); ++it)
 		{
-			result = alphabeta((*it).state, alpha, beta);
+			result = alphabeta(*it, alpha, beta);
 			alpha = std::max(alpha, v);
 			if(result > v)
 			{
-				next_state = (*it).state;
+				next_state = (*it)->state;
 				v = result;
 			}
 			if(alpha > beta)
@@ -40,13 +39,13 @@ double MinMaxRunner::alphabeta(const GameTree::Node& node, double alpha, double 
 	else
 	{
 		v = std::numeric_limits<double>::infinity();
-		for (auto it = node.next.begin(); it != node.next.end(); ++it)
+		for (auto it = node->next.begin(); it != node->next.end(); ++it)
 		{
-			result = alphabeta((*it).state, alpha, beta);
+			result = alphabeta(*it, alpha, beta);
 			beta = std::min(beta, v);
 			if(result < v)
 			{
-				next_state = (*it).state;
+				next_state = (*it)->state;
 				v = result;
 			}
 			if(alpha > beta)

@@ -16,7 +16,8 @@ class Runner {
         virtual void run(Args... args) = 0;
 
         std::thread start(Args... args);
-        void stop(std::thread& thread);
+        //void stop(std::thread& thread);
+        void stop();
         void do_running(Args... args);
         bool can_continue();
 
