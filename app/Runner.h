@@ -9,17 +9,18 @@ class Runner {
     public:
         Ret run_for(std::chrono::milliseconds duration, Args... args);
 
+        virtual ~Runner() {}
     protected:
         const Ret& get_value();
         void set_value(const Ret& new_val);
+
+        bool can_continue();
     private:
-        virtual void run(Args... args) = 0;
+        virtual void run(Args... args);
 
         std::thread start(Args... args);
-        //void stop(std::thread& thread);
-        void stop();
-        void do_running(Args... args);
-        bool can_continue();
+        void stop(std::thread& thread);
+        virtual void do_running(Args... args);
 
         bool continuation;
         std::mutex cont_lock;
