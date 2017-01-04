@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+from time import time
 import sys
 import os
 sys.path.append(os.getcwd() + "/bin/lib")
@@ -14,7 +14,9 @@ def print_board(board):
 board = Board()
 
 print_board(board)
-
+t1 = time();
 board = AI_turn(board)
+t2 = time();
 print("")
 print_board(board)
+print(t2-t1)

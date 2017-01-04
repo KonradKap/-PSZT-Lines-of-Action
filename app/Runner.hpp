@@ -1,5 +1,3 @@
-#include <iostream>
-
 template<class Ret, class... Args>
 bool Runner<Ret, Args...>::can_continue() {
     const std::lock_guard<std::mutex> guard(cont_lock);

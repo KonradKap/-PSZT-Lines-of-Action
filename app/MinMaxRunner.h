@@ -2,21 +2,19 @@
 
 #include <vector>
 #include <limits>
-#include <memory>
 
 #include "Runner.h"
 #include "Board.h"
 #include "Position.h"
-#include "GameTree.h"
 
 class MinMaxRunner : public Runner<Board, const Board&> {
     private:
         void run(const Board& state);
 
-        double alphabeta(const GameTree::Node * node, double alpha, double beta);
+        double alphabeta(const Board& board, double alpha, double beta, int depth);
 
         Board next_state;
-        std::shared_ptr<GameTree> tree;
+        int depth = 3;
 };
 
 inline Board AI_turn(const Board& current_state) {
