@@ -1,19 +1,10 @@
 #include "MinMaxRunner.h"
 
-Board AI_turn(const Board& current_state) {
-	MinMaxRunner runner;
-	const auto thinking_time = std::chrono::milliseconds(5000);
-	return runner.run_for(thinking_time, current_state);
-}
-
-void MinMaxRunner::do_running(const Board& state) {
-    auto tree = std::make_shared<GameTree>(state, 1);
-    while(can_continue())
-        run(tree);
-}
-
-void MinMaxRunner::run(std::shared_ptr<GameTree>& tree) {
-    tree.get()->update();
+void MinMaxRunner::run(const Board& state) {
+    if(tree.get() == nullptr)
+    	tree = std::make_shared<GameTree>(state, 1);
+    else 
+    	tree.get()->update();
 
     double inf = std::numeric_limits<double>::infinity();
 	alphabeta(tree.get()->getRoot(), -inf, inf);

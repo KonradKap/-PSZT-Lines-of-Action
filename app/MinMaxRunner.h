@@ -10,15 +10,17 @@
 #include "GameTree.h"
 
 class MinMaxRunner : public Runner<Board, const Board&> {
-    public:
-        ~MinMaxRunner() {}
     private:
-        void run(std::shared_ptr<GameTree>& game);
-        void do_running(const Board& state);
+        void run(const Board& state);
 
         double alphabeta(const GameTree::Node * node, double alpha, double beta);
 
         Board next_state;
+        std::shared_ptr<GameTree> tree;
 };
 
-Board AI_turn(const Board& current_state);
+inline Board AI_turn(const Board& current_state) {
+	MinMaxRunner runner;
+	const auto thinking_time = std::chrono::milliseconds(500);
+	return runner.run_for(thinking_time, current_state);
+}
