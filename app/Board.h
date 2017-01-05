@@ -25,8 +25,7 @@ class Board {
         int getPawnsCount(Position begin, Direction dir) const;
         std::vector<Position> getAllPossibleMoves(Position pawn) const;
         std::vector<Position> getNeighbourFields(Position pos) const;
-
-        std::vector<Board> getPossibleStates() const; // new
+        std::vector<Board> getPossibleStates() const;
 
         static bool isValid(Position position);
         static bool isValid(int x, int y);

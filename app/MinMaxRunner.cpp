@@ -1,12 +1,19 @@
 #include "MinMaxRunner.h"
 
+using namespace std::literals; //fancy millieconds
+
+Board AI_turn(const Board& current_state) {
+	MinMaxRunner runner;
+	const auto thinking_time = 5000ms;
+	return runner.run_for(thinking_time, current_state);
+}
+
 void MinMaxRunner::run(const Board& state) {
     double inf = std::numeric_limits<double>::infinity();
 	alphabeta(state, -inf, inf, depth);
 	depth++;
 	set_value(next_state);
 }
-
 
 double MinMaxRunner::alphabeta(const Board& board, double alpha, double beta, int depth)
 {

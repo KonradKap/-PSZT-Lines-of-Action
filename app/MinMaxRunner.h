@@ -17,8 +17,4 @@ class MinMaxRunner : public Runner<Board, const Board&> {
         int depth = 3;
 };
 
-inline Board AI_turn(const Board& current_state) {
-	MinMaxRunner runner;
-	const auto thinking_time = std::chrono::milliseconds(500);
-	return runner.run_for(thinking_time, current_state);
-}
+Board AI_turn(const Board& current_state);

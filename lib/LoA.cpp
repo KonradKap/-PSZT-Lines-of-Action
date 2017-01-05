@@ -70,6 +70,7 @@ BOOST_PYTHON_MODULE(LoA) {
         .def("evaluate", &Board::evaluate)
         .def("get", get_ii)
         .def("get", get_pos)
+        .def("getMovingPlayer", &Board::getMovingPlayer)
         .def("isGameOver", &Board::isGameOver)
         .def("getWinner", &Board::getWinner)
     ;

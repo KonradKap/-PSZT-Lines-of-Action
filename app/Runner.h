@@ -1,29 +1,27 @@
 #pragma once
 
 #include <chrono> 
-#include <thread>
-#include <mutex>
 
 template<class Ret, class... Args>
 class Runner {
     public:
-        Ret run_for(std::chrono::milliseconds duration, Args... args);
+        typedef decltype(std::chrono::system_clock::now()) time_t;
+        typedef decltype(time_t() - time_t()) duration_t;
+
+        Ret run_for(duration_t duration, Args... args);
 
     protected:
-        const Ret& get_value();
+        const Ret& get_value() const;
         void set_value(const Ret& new_val);
     private:
         virtual void run(Args... args) = 0;
 
-        std::thread start(Args... args);
-        //void stop(std::thread& thread);
-        void stop();
+        void start(duration_t);
+        bool can_continue() const;
         void do_running(Args... args);
-        bool can_continue();
 
-        bool continuation;
-        std::mutex cont_lock;
-        std::mutex value_lock;
+        time_t start_time;
+        duration_t requested_duration;
         Ret value;
 };
 
