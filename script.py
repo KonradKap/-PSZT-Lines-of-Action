@@ -32,5 +32,6 @@ while not board.isGameOver():
     print_board(board)
     print()
 
+
 print("\x1b[2J\x1b[H")
 print("Winner is: " + board.getWinner())

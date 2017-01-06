@@ -11,9 +11,9 @@ class MinMaxRunner : public Runner<Board, const Board&> {
     private:
         void run(const Board& state);
 
-        double alphabeta(const Board& board, double alpha, double beta, int depth);
+        std::pair<double, Board> alphabeta(const Board& board, double alpha, double beta, int depth);
 
-        Board next_state;
+        //Board next_state;
         int depth = 3;
 };
 
