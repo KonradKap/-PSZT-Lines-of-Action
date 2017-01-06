@@ -28,11 +28,9 @@ bool Runner<Ret, Args...>::can_continue() const {
     return requested_duration > period;
 }
 
-#include <iostream>
 template<class Ret, class... Args>
 void Runner<Ret, Args...>::do_running(Args... args) {
     while(can_continue()) {
         run(args...);
-        std::cout << "runnin"<< std::endl;
     }
 }

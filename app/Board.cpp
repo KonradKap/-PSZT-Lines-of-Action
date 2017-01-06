@@ -143,21 +143,24 @@ GameOverResult Board::getWinner() const {
 double Board::getValue(Field colour) const {
     auto center_mass = getMassCenter(colour);
 
-    const auto concentration_weight = -0.5;
+    const auto concentration_weight = -0.3;
     const auto concentration = getDistanceSumTo(colour, center_mass);
 
-    const auto centralization_weight = -0.5;
+    const auto centralization_weight = -0.7;
     const auto centralization = getDistanceSumTo(colour, {3.5, 3.5});
 
     center_mass.first -= 3.5;
     center_mass.first *= center_mass.first;
     center_mass.second -= 3.5;
     center_mass.second *= center_mass.second;
-    const auto center_mass_value = std::sqrt(center_mass.first + center_mass.second);
+    const auto center_mass_value = std::sqrt(center_mass.first + center_mass.second)*(-0.3);
 
-    return concentration*concentration_weight +
-           centralization*centralization_weight +
-           center_mass_value;
+    const auto winning_value = (areAllConnected(colour) - areAllConnected(enemyOf(colour))) * 100;
+        
+    return concentration*concentration_weight
+           + centralization*centralization_weight
+           + center_mass_value
+           + winning_value;
 }
 
 void Board::makeTurn(Position from, Position to) {
