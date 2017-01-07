@@ -2,36 +2,42 @@
 from time import time
 import sys
 import os
+import pygame
+
 sys.path.append(os.getcwd() + "/bin/lib")
-from LoA import *
+import LoA
+import modules.colors as colors
 
-class bcolors:
-    WHITE = '\x1b[0;37;40m'
-    BLACK = '\x1b[0;34;40m' #actually blue
-    EMPTY = '\x1b[0;30;40m'
-
-def print_board(board):
-    print("\x1b[2J\x1b[H")
+def drawBoard(screen, board):
     for y in range(8):
         for x in range(8):
-            switch = {
-                Field.Empty : bcolors.EMPTY + " . ",
-                Field.White : bcolors.WHITE + " O ",
-                Field.Black : bcolors.BLACK + " O ",
-            }
-            print(switch[board.get(x, y)], end="")
-            #less fancy version below:
-            #print(board.get(x,y), end=" ")
-        print()
+            if(x+y)%2 == 0:
+                color = colors.FIELD_BRIGHT
+            else:
+                color = colors.FIELD_DARK
+            pygame.draw.rect(screen, color, (x*80, y*80, 80, 80))
+            if board.get(x,y) == LoA.Field.Black:
+                pygame.draw.circle(screen, colors.PAWN_BLACK, (x*80+40, y*80+40), 40)
+            elif board.get(x,y) == LoA.Field.White:
+                pygame.draw.circle(screen, colors.PAWN_WHITE, (x*80+40, y*80+40), 40)
 
-board = Board()
-print_board(Board())
+pygame.init()
 
-while not board.isGameOver():
-    board = AI_turn(board)
-    print_board(board)
-    print()
+(width, height) = (640, 640)
+screen = pygame.display.set_mode((width, height))
+screen.fill(colors.BACKGROUND)
+pygame.display.flip()
 
+board = LoA.Board()
 
-print("\x1b[2J\x1b[H")
-print("Winner is: " + board.getWinner())
+drawBoard(screen, board)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if(event.type == pygame.QUIT):
+            running = False
+    screen.fill(colors.BACKGROUND)
+    drawBoard(screen, board)
+    board = LoA.AI_turn(board)
+    pygame.display.update()
