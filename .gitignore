@@ -1,5 +1,6 @@
 bin
 *.d
 *.swp
+*.swo
 
 __pycache__
