@@ -183,6 +183,8 @@ unsigned Board::countGroupFrom(Position pawn) const {
     std::queue<Position> queue;
     queue.push(pawn);
     std::array<std::array<bool, 8>, 8> visited;
+    for(auto& row : visited)
+        row.fill(false);
     visited[pawn.x][pawn.y] = true;
 
     while(not queue.empty()) {

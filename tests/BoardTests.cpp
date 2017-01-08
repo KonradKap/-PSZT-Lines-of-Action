@@ -10,9 +10,40 @@
 #undef private
 
 BOOST_AUTO_TEST_SUITE(BoardTests)
+
 BOOST_AUTO_TEST_CASE(getPawnsCountTest1) {
     Board b;
     BOOST_CHECK_EQUAL(6, b.getPawnsCount({0,1}, Direction::Down));
+}
+
+BOOST_AUTO_TEST_CASE(areAllConnectedTest1) {
+    Board b = Board::board_t{{
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, White, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, White, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, White, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}}
+    }};
+
+    BOOST_CHECK_EQUAL(true, b.areAllConnected(Field::White));
+}
+
+BOOST_AUTO_TEST_CASE(areAllConnectedTest2) {
+    Board b = Board::board_t{{
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, White, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, White, Empty, White, Empty}},
+        {{Empty, Empty, Empty, White, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, White, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}},
+        {{Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty}}
+    }};
+
+    BOOST_CHECK_EQUAL(false, b.areAllConnected(Field::White));
 }
 
 BOOST_AUTO_TEST_CASE(getAllPossibleMovesTest1) {

@@ -11,6 +11,10 @@ sys.path.append(os.getcwd() + "/bin/lib")
 import LoA
 import modules.colors as colors
 
+class RestartGame(Exception):
+    def __init__(self, cont):
+        self.continuation = cont
+
 class Game:
     FIELD_SIZE = 80
     PLAYER = LoA.Field.Empty
@@ -22,14 +26,22 @@ class Game:
     board = LoA.Board()
 
 def end_game():
-    if Game.board.getWinner() == Game.PLAYER:
-        statement = "YOU WON!"
-    else:
-        statement = "You lost :<"
+    switch = {
+        LoA.GameOverResult.Draw : "Draw",
+        0 : "Draw",
+        LoA.GameOverResult.WhiteWon : "White Won",
+        1 : "White Won",
+        LoA.GameOverResult.BlackWon : "Black Won",
+        2 : "Black Won",
+        LoA.GameOverResult.NoWinner : "No winner",
+        3 : "No winner",
+    }
+    statement = switch[Game.board.getWinner()]
+
     if show_popup("Game over", statement + "\nDo you want to play again?"):
-        main()
+        raise RestartGame(True)
     else:
-        Game.running = False
+        raise RestartGame(False)
 
 def drawBoard():
     for y in range(8):
@@ -108,9 +120,7 @@ def show_popup(title, question):
     drawBoard()
     return result
 
-def main():
-    pygame.display.set_caption("Lines of Action")
-
+def start_game():
     Game.board = LoA.Board()
     resetCurrentPawn()
     drawBoard()
@@ -123,9 +133,19 @@ def main():
     if Game.PLAYER == LoA.Field.White:
         Game.board = LoA.AI_turn(Game.board)
         drawBoard()
+
+def main():
+    pygame.display.set_caption("Lines of Action")
+
+    start_game()
     
     while Game.running:
-        loopOnce()
+        try:
+            loopOnce()
+        except RestartGame as exception:
+            Game.running = exception.continuation
+            if Game.running:
+                start_game()
 
 pygame.init()
 main()

@@ -8,10 +8,10 @@
 #include "Field.h"
 
 enum GameOverResult {
-    NoWinner,
-    WhiteWon,
-    BlackWon,
-    Draw,
+    NoWinner = 000,
+    WhiteWon = 001,
+    BlackWon = 010,
+    Draw     = 011,
 };
 
 class Board {
