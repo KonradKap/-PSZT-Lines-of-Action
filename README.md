@@ -5,5 +5,6 @@
   * *Dziwne, u mnie działa*
 
 ##TODO:
- - [ ] Wszystko
+ - [x] Wszystko
+ - [ ] Poprawic cokolwiek trzeba bedzie poprawic po wtorku
  - [ ] Pójść na piwo
