@@ -15,6 +15,13 @@ class MinMaxRunner : public Runner<Board, const Board&> {
 
         //Board next_state;
         int depth = 3;
+
+        // DEBUGGING
+        int cutoffs = 0;
+        int visited_nodes = 0;
+        int leafs = 0;
+        int win_states = 0;
+        void treeInfo();
 };
 
 Board AI_turn(const Board& current_state);
