@@ -11,9 +11,9 @@ Board AI_turn(const Board& current_state) {
 #include <iostream>
 void MinMaxRunner::treeInfo() 
 {
-	std::cout << "DEPTH: " << depth << "\tVISITED NODES: " << visited_nodes << "\tLEAFS: " << leafs 
-	<< "\tWIN_STATES: " << win_states << "\tAV CHILDS PER NODE: " << visited_nodes/(visited_nodes-leafs) 
-	<< "\tA-B CUTOFFS: " << cutoffs << std::endl << std::endl;
+	std::cout << "DEPTH: " << depth << "\tVISITED_NODES: " << visited_nodes << "\tLEAVES: " << leafs 
+	<< "\tWIN_STATES: " << win_states << "\tAV_CHILDS_PER_NODE: " << visited_nodes/(visited_nodes-leafs) 
+	<< "\tA-B_CUTOFFS: " << cutoffs << std::endl << std::endl;
 	visited_nodes = cutoffs = leafs = 0;
 }
 
